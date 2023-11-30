@@ -1,0 +1,11 @@
+# Ignore files and directories
+node_modules
+dist
+build
+
+# Ignore specific files
+.env
+.DS_Store
+README.md
+Dockerfile
+docker-compose.yml

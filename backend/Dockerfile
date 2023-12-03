@@ -14,6 +14,8 @@ ENV NODE_ENV production
 
 RUN npx prisma generate
 
-EXPOSE 3000
+ARG APP_PORT
+
+EXPOSE ${APP_PORT}
 
 CMD npx prisma migrate deploy & npm run start

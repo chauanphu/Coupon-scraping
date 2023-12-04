@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { fetchDataShopee } from "./crawl-data";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -10,12 +11,7 @@ const app: Express = express();
 
 app.use(express.json());
 // Return with header allow COR
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  // Allow all methods
-  res.header("Access-Control-Allow-Methods", "*");
-  next();
-});
+app.use(cors());
 // Define the generateJWT function
 function generateJWT(username: string): string {
   const secret = process.env.AUTH_SECRET as string;
@@ -84,6 +80,9 @@ app.post("/signup", async (req: Request, res: Response) => {
 });
 
 app.get('/shopee', async (req, res) => {
+  // Get sortOrder from query string
+  const { sortOrder } = req.query;
+  
   // Get page from query
   const result = await fetchDataShopee();
   if (result) res.json(result);

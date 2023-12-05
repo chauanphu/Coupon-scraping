@@ -18,13 +18,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.fe
-    image: coupon-scraping-app:1.0.0-frontend
+    image: coupon-scraping-app:1.0.1-frontend
     ports:
       - 80:80
     depends_on:
       - app
     volumes:
-      - public:/usr/share/nginx/html
+      - dist:/usr/share/nginx/html
 
   postgres:
     image: postgres:16
@@ -38,9 +38,9 @@ services:
       - ./db:/var/lib/postgresql/data
 
 volumes:
-  public:
+  dist:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: ./public 
+      device: ./dist 

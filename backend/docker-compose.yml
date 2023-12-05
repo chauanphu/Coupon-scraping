@@ -4,16 +4,28 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: coupon-scraping-app:latest
+    image: coupon-scraping-app:latest-backend
     ports:
-      - 3000:80
+      - 3000:3000
     depends_on:
       - postgres
     env_file:
       - .env
     environment:
-      - APP_PORT=80
+      - APP_PORT=3000
       - DATABASE_URL=postgresql://user:password@postgres:5432/db?schema=public
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.fe
+    image: coupon-scraping-app:1.0.0-frontend
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    volumes:
+      - public:/usr/share/nginx/html
+
   postgres:
     image: postgres:16
     environment:
@@ -24,3 +36,11 @@ services:
       - "5432:5432"
     volumes:
       - ./db:/var/lib/postgresql/data
+
+volumes:
+  public:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./public 

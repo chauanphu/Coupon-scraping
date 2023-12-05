@@ -81,11 +81,34 @@ app.post("/signup", async (req: Request, res: Response) => {
 
 app.get('/shopee', async (req, res) => {
   // Get sortOrder from query string
-  const { sortOrder } = req.query;
-  
+  const { sortOrder, page, limit } = req.query;
+  const _sortOrder = sortOrder || "asc";
+  const _page = page || 1;
   // Get page from query
   const result = await fetchDataShopee();
-  if (result) res.json(result);
+  // Sort result by name descending or ascending
+  if (_sortOrder === "asc") {
+    result.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (_sortOrder === "desc") {
+    result.sort((a, b) => b.name.localeCompare(a.name));
+  } else {
+    res.status(400).json({ error: "Invalid sortOrder" });
+    return
+  }
+
+  // Paginate result
+  const perPage = Number(limit) || 10;
+  const start = (Number(_page) - 1) * perPage;
+  const end = start + perPage;
+  const paginatedResult = result.slice(start, end);
+
+  const finalData = paginatedResult.map((item) => {
+    return {
+      ...item,
+      image: `https://cf.shopee.vn/file/${item.image}`
+    }
+  })
+  if (finalData) res.json(finalData);
   else res.status(500).json({ error: "Internal server error" });
 })
 app.listen(process.env.APP_PORT, () => console.log(`Server started on port ${process.env.APP_PORT}`));

@@ -20,7 +20,6 @@ export async function fetchDataShopee() {
      page++;
   }
   return allData;
-  fs.writeFileSync('dataShopee.json', JSON.stringify(allData, null, 2));
  }
  
 //https://cf.shopee.vn/file/ + image_url cho ben fe

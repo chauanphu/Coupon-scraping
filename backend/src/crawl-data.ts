@@ -1,27 +1,35 @@
-const fs = require('fs');
+const fs = require("fs");
 
 export async function fetchDataShopee() {
   const allData = [];
   let page = 1;
- 
-  while (true) {
-     const response = await fetch(`https://shopee-api.j2team.dev/deals?page=${page}`, {
-       headers: {
-         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-       }
-     });
- 
-     const data = await response.json() as any;
- 
-     if (data.data.length === 0) {
-       break;
-     }
-     allData.push(...data.data);
-     page++;
+  try {
+    while (true) {
+      const response = await fetch(
+        `https://shopee-api.j2team.dev/deals?page=${page}`,
+        {
+          headers: {
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+          },
+        }
+      );
+
+      const data = (await response.json()) as any;
+
+      if (data.data.length === 0) {
+        break;
+      }
+      allData.push(...data.data);
+      page++;
+    }
+    return allData;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-  return allData;
- }
- 
+}
+
 //https://cf.shopee.vn/file/ + image_url cho ben fe
 // fetchDataShopee();
 
@@ -39,10 +47,10 @@ export async function fetchDataShopee() {
 // }
 // let headers = {
 //   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-//   'Access-Control-Allow-Origin' : '*', 
+//   'Access-Control-Allow-Origin' : '*',
 //   'Access-Control-Allow-Methods' : 'GET'
 //  };
- 
+
 //  axios.get('https://tiki.vn/api/v2/widget/deals/collection?page=1&per_page=2400/', { headers: headers })
 //   .then(response => {
 //     console.log(response.data);
@@ -51,14 +59,14 @@ export async function fetchDataShopee() {
 //     console.error('Error:', error); });
 // async function fetchDataTiki() {
 //   const allData = [];
- 
+
 //   while (true) {
 //      const response = await fetch(`https://tiki.vn/api/v2/widget/deals/collection?page=1&per_page=1`, {
 //        headers: {
 //          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 //        }
 //      });
- 
+
 //      const data = await response.json();
 //      console.log(data)
 //      if (data.data.length === 0) {
@@ -66,8 +74,8 @@ export async function fetchDataShopee() {
 //      }
 //      allData.push(...data.data);
 //   }
- 
+
 //   fs.writeFileSync('dataTiki.json', JSON.stringify(allData, null, 2));
 //  }
- 
+
 // fetchDataTiki();

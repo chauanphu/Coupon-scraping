@@ -16,3 +16,14 @@ model User {
   password  String
 }
 
+model Coupon {
+  product_id        BigInt      @id
+  name String
+  price Int
+  raw_discount Int
+  image String
+  short_url String
+  rating_star Int
+  shop_location String
+}
+

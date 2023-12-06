@@ -12,7 +12,6 @@ services:
     env_file:
       - .env
     environment:
-      - APP_PORT=3000
       - DATABASE_URL=postgresql://user:password@postgres:5432/db?schema=public
   frontend:
     build:

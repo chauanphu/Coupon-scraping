@@ -1,0 +1,12 @@
+
+# Use a lightweight base image
+FROM nginx:alpine
+
+# Copy the static files to the nginx html directory
+# COPY dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start the nginx server
+CMD ["nginx", "-g", "daemon off;"]
